@@ -59,6 +59,21 @@ case "$target_os" in
         esac
         ;;
 
+    linux-uclibc*)
+        COMMON_CFLAGS="-Wall -DTARGET_LINUX"
+        COMMON_LDFLAGS="$COMMON_LDFLAGS -lc -ldl"
+
+        case "$target_cpu" in
+            mipsel)
+                COMMON_CFLAGS="$COMMON_CFLAGS -DUSE_OPENSSL"
+                COMMON_LDFLAGS="$COMMON_LDFLAGS"
+                LIBSSL="crypto"
+                USE_OPENSSL=yes
+                ;;
+
+        esac
+        ;;
+
     mingw32)
         INCLUDES="-I/usr/local/include"
         COMMON_CFLAGS="$COMMON_CFLAGS -DUSE_LIBDES $CFLAGS -I`pwd`/../3rdparty/des-4.04b"

@@ -33,18 +33,23 @@ AC_ARG_WITH(bennu-prefix,[  --with-bennu-prefix=PFX Prefix where Bennu is instal
 
 case "$target_os" in
     mingw32|mingw32msvc)
-	    CFLAGS+=" -DWIN32 -D_WIN32 "
-	    ;;
+	CFLAGS="$CFLAGS -DWIN32 -D_WIN32 "
+	;;
+
+    linux-uclibc*)
+        CFLAGS="$CFLAGS -Wall"
+        LDFLAGS="$LDFLAGS -lc -ldl"
+	;;
 
     *)
-        CFLAGS+=" -Wall -m32"
-        LDFLAGS+=" -lc -ldl -m32"
-	    ;;
+        CFLAGS="$CFLAGS -Wall -m32"
+        LDFLAGS="$LDFLAGS -lc -ldl -m32"
+	;;
 
 esac
 
-COMMON_CFLAGS+="$CFLAGS -I${bennu_prefix}/include"
-COMMON_LDFLAGS+="$LDFLAGS"
+COMMON_CFLAGS="$COMMON_CFLAGS $CFLAGS -I${bennu_prefix}/include"
+COMMON_LDFLAGS="$COMMON_LDFLAGS $LDFLAGS"
 
 # Checks for header files.
 AC_HEADER_STDC

@@ -11298,7 +11298,24 @@ case "$target_os" in
                 ;;
 
         esac
-	    ;;
+	;;
+
+    linux-uclibc*)
+        COMMON_CFLAGS="-Wall -DTARGET_LINUX"
+        COMMON_LDFLAGS="$COMMON_LIBS -lc -ldl"
+
+        case "$target_cpu" in
+            mipsel)
+                COMMON_CFLAGS="$COMMON_CFLAGS -DUNDEF_SDL_VIDEO_DRIVER_X11"
+                COMMON_LDFLAGS="$COMMON_LDFLAGS"
+                SDL_MIXER_DEPS="-lSDL -liconv -lvorbis -logg -lmad -lvorbisfile -lvorbisidec"
+                LM=-lm
+                LIBSSL="crypto"
+                USE_OPENSSL=yes
+                ;;
+
+        esac
+	;;
 
     mingw32)
 	    COMMON_CFLAGS="$COMMON_CFLAGS $CFLAGS -I/usr/local/include -DTARGET_WIN32 -DWIN32 -D_WIN32 -DUSE_LIBDES -I`pwd`/../3rdparty/des-4.04b"
